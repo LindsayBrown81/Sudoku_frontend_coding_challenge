@@ -1,0 +1,32 @@
+{
+  "name": "endgame-front-end-challenge",
+  "version": "1.1.0",
+  "description": "Sudoku coding challenge",
+  "main": "server.js",
+  "private": true,
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "expect.js": "0.3.1",
+    "express": "^4.16.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.4"
+  },
+  "engines": {
+    "node": ">=6.10.3"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "jasmine-es6": "^0.4.3",
+    "nodemon": "^1.14.9"
+  },
+  "scripts": {
+    "test": "jasmine",
+    "start": "nodemon server.js --exec babel-node",
+    "archive": "git archive --format zip --output endgame_frontend_coding_challenge.zip master"
+  },
+  "author": "oatkiller",
+  "license": "UNLICENSED"
+}
