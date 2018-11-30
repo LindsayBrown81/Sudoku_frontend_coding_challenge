@@ -1,77 +1,72 @@
 export function sudokuVerifier({ problem, solution }) {
 
-	// TO DO implement this function
-	//const square = [[0,1,2,9,10,11,18,19,20]];
-	//const row = [[0,1,2,3,4,5,6,7,8],			 [9,10,11,12,13,14,15,16,17]];
-	//const column = [[0,9,18,27,36,45,54,63,72]];
+	// TODO implement this function
 
-	// Store game's current status
-	var currentStatus = "status";
+	// store functions' output; i.e., game's status and index positions of invalid entries
+	var status = "status";
+	var invalidIndexes = [];
 
-
-	var currentInvalidIndexes = [];
-
-	function rowChecker(problemn, solution){
+	function rowChecker(problem, solution){
 		// for loop that checks for dups
 		for(var row = 0; row < 9; row ++){
+			// scope of histories is per row
 			var indexHistory = [];
-			var currentNums = [];
+			var valHistory = [];			
 			
-			// scope of currentNums is current iteration
 			for(var column = 0; column < 9; column ++){
-				var index =  column + (row * 9);
+				var index = column + (row * 9); 
 				indexHistory.push(index);				
 				
-				if(currentNums.indexOf(solution[index]) !== -1){
-				     //if this is a repeated number
-				    
-					if(currentInvalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
-						currentInvalidIndexes.push(index);
+				// if this number or value is already in this row
+				if(valHistory.indexOf(solution[index]) !== -1){ // ~ proly no... && (problem[index])
+					// if invalidIndexes array contains current index and this is a user-inputted dup number
+					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ // ~ === ~why need problem[index]? to ensure entry is user input?
+						invalidIndexes.push(index);
 					}
-					
-					var numIndex = currentNums.indexOf( //grab orig index of duplicated value for this row
-							solution[index] //grab value
+					// ~ renamed valIndex to origIndex
+					var origIndex = valHistory.indexOf( // store orig index of dup value for this row
+							solution[index] // value <- ~VERIFY is val, not index
 						);
-					if(currentInvalidIndexes.indexOf(indexHistory[numIndex]) === -1 && problem[indexHistory[numIndex]] == null){
-						currentInvalidIndexes.push(indexHistory[numIndex]);
+					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+						invalidIndexes.push(indexHistory[origIndex]);
 					}
-					currentNums[numIndex] = '-';
+					// identify the index of only one dup value per iteration. 
+					valHistory[origIndex] = '-';
 
 				}
-				currentNums.push(solution[index]);
+				valHistory.push(solution[index]);
 			}
 		}
 		
 	}
 
-	function columnChecker(problem, solution) {
+	function columnChecker(problem, solution){
 		// for loop that checks for dups
 		for(var column = 0; column < 9; column ++){
 			var indexHistory = [];
-			var currentNums = [];
+			var valHistory = [];
 			
-			// scope of currentNums is current iteration
 			for(var row = 0; row < 9; row ++){
-				var index =  column + (row * 9);
+				var index = column + (row * 9);
 				indexHistory.push(index);				
 				
-				if(currentNums.indexOf(solution[index]) !== -1){
-				     //if this is a repeated number
-				    
-					if(currentInvalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
-						currentInvalidIndexes.push(index);
+				// if this number or value is already in this column
+				if(valHistory.indexOf(solution[index]) !== -1){ // ~ proly no...&& (problem[index])
+				                                                				    
+					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
+						invalidIndexes.push(index);
 					}
 					
-					var numIndex = currentNums.indexOf( //grab orig index of duplicated value for this row
-							solution[index] //grab value
+					var origIndex = valHistory.indexOf(
+							solution[index]
 						);
-					if(currentInvalidIndexes.indexOf(indexHistory[numIndex]) === -1 && problem[indexHistory[numIndex]] == null){
-						currentInvalidIndexes.push(indexHistory[numIndex]);
+					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+						invalidIndexes.push(indexHistory[origIndex]);
 					}
-					currentNums[numIndex] = '-';
+					valHistory[origIndex] = '-';
 
 				}
-				currentNums.push(solution[index]);
+				valHistory.push(solution[index]);
 			}
 		}
 	}
@@ -80,67 +75,71 @@ export function sudokuVerifier({ problem, solution }) {
 		// for loop that checks for dups
 		for(var square = 0; square < 9; square ++){
 			var indexHistory = [];
-			var currentNums = [];
+			var valHistory = [];
+			
 			for(var row = 0; row < 3; row ++){
 				
-				// scope of currentNums is current iteration
 				for(var column = 0; column < 3; column ++){
 
 					var index =  column + (row * 9) + (square % 3);
 					indexHistory.push(index);				
 					
-					if(currentNums.indexOf(solution[index]) !== -1){
-					     //if this is a repeated number
+					// if this number or value is already in this square
+					if(valHistory.indexOf(solution[index]) !== -1){
 					    
-						if(currentInvalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
-							currentInvalidIndexes.push(index);
+						if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
+							invalidIndexes.push(index);
 						}
 						
-						var numIndex = currentNums.indexOf( //grab orig index of duplicated value for this row
-								solution[index] //grab value
+						var origIndex = valHistory.indexOf(
+								solution[index]
 							);
-						if(currentInvalidIndexes.indexOf(indexHistory[numIndex]) === -1 && problem[indexHistory[numIndex]] == null){
-							currentInvalidIndexes.push(indexHistory[numIndex]);
+						if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+							invalidIndexes.push(indexHistory[origIndex]);
 						}
-						currentNums[numIndex] = '-';
+						valHistory[origIndex] = '-';
 
 					}
-					currentNums.push(solution[index]);
+					valHistory.push(solution[index]);
 				}
 			}
 		}
 	}
 
-	rowChecker(problem, solution);
+	// invoke checker functions with input
+	rowChecker(problem, solution); //~ why are these args not colored? Do I need to pass in args?
 	columnChecker(problem, solution);
 	squareChecker(problem, solution);
 	
-	// Define status
-	// if any of the functions above return a null index value, then the currentStatus should be incomplete. 
-	// if invalidRowIndexes is Not Empty
-	if(currentInvalidIndexes Is Not Empty) { //psuedo
-		currentStatus = "invalid";
+	// define game status
+	// if invalidIndexes is an array and is not an empty array
+ 	if (Array.isArray(invalidIndexes) && invalidIndexes.length) {
+		status = "invalid";
 	}
-	// if ... column
-	// if ... square 
-
+	
+	// if any of the functions above return a null value, then the status should be incomplete.
 	function hasEmptyValue(solution){ //pseudo
-		forEach var value in solution
-			if (value == null){
-				return true;
-			}
+		// forEach var value in solution
+		// 	if (value == null){
+		// 		return true;
+		// 	}
+		 for (const value of solution){
+		 	if (value == null){
+		 		return true;
+		 	}
+		 }
 	}
 
-	if(hasEmptyValue(solution) && currentStatus !== "invalid"){
-			currentStatus = "incomplete"
+	if (hasEmptyValue(solution) && status !== "invalid"){
+			status = "incomplete"
 		}
 
+	console.log("invalidIndexes: ", invalidIndexes);
+	invalidIndexes.sort(); // ~ what was I thinking here?
 
-		currentInvalidIndexes.sort();
-
-	  return {
-	    status: currentInvalidIndexes, // valid, invalid, incomplete. invalid takes precedence over incomplete. so if its both, just say its invalid. 
-	    invalidIndexes: currentInvalidIndexes, // which indexes are invalid
-	  }
-	}
+  	return {
+  		status: status, //invalidIndexes, // valid, invalid, incomplete. invalid takes precedence over incomplete. so if its both, just say its invalid. 
+	    invalidIndexes: invalidIndexes, // which indexes are invalid ~ Delete comma? Proly not
+  	}
+}
 
