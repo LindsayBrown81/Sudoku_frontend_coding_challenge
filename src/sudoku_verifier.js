@@ -201,19 +201,18 @@
 				// if this number or value is already in this row
 				console.log("solution[index] ", solution[index]);
 				console.log("problem[index] ", problem[index]);
-				// if this number or value is already in this row
-				if(valHistory.indexOf(solution[index]) !== -1 && (problem[index])){ // ~ proly no... && (problem[index])
+				// if this number or value is already in this row and its not null
+				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no... && (problem[index])
 					// if invalidIndexes array contains current index and this is a user-inputted dup number
-					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ // ~ === ~why need problem[index]? to ensure entry is user input?
+					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ // ~ === ~why need problem[index]? to ensure entry is user input?
 						invalidIndexes.push(index);
 					}
-					console.log("valHistory ", valHistory);
 					// ~ renamed valIndex to origIndex
 					var origIndex = valHistory.indexOf( // store orig index of dup value for this row
 						solution[index] // value <- ~VERIFY is val, not index
-						);
-						console.log("origIndex ", origIndex);
-					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+					);
+					console.log("origIndex ", origIndex);
+					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
 						invalidIndexes.push(indexHistory[origIndex]);
 					}
 					// identify the index of only one dup value per iteration. 
@@ -222,6 +221,7 @@
 				}
 				valHistory.push(solution[index]);
 				console.log("valHistory ", valHistory);
+				console.log("invalidIndexes ", invalidIndexes); //0 good
 			}
 		}
 		
@@ -237,28 +237,30 @@
 				var index = column + (row * 9);
 				indexHistory.push(index);				
 				
-				// if this number or value is already in this column
+				// if this number or value is already in this column and its not null
 				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no...&& (problem[index])
 				                                                				    
-					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
+					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
 						invalidIndexes.push(index);
 					}
 					
 					var origIndex = valHistory.indexOf(
-							solution[index]
-						);
-					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+						solution[index]
+					);
+					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
 						invalidIndexes.push(indexHistory[origIndex]);
 					}
 					valHistory[origIndex] = '-';
 
 				}
 				valHistory.push(solution[index]);
+				console.log("valHistory ", valHistory);
+				console.log("invalidIndexes ", invalidIndexes);
 			}
 		}
 	}
 
-	function squareChecker(solution) {
+	function squareChecker(problem, solution) {
 		// for loop that checks for dups
 		for(var square = 0; square < 9; square++){
 			var indexHistory = [];
@@ -274,18 +276,22 @@
 					// if this number or value is already in this square
 					if(valHistory.indexOf(solution[index]) !== -1){
 					    
-						if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
+						if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
 							invalidIndexes.push(index);
 						}
 						
-						var origIndex = valHistory.indexOf(solution[index]);
-						if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
+						var origIndex = valHistory.indexOf(
+							solution[index]
+						);
+						if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
 							invalidIndexes.push(indexHistory[origIndex]);
 						}
 						valHistory[origIndex] = '-';
 
 					}
 					valHistory.push(solution[index]);
+					console.log("valHistory ", valHistory);
+					console.log("invalidIndexes ", invalidIndexes);
 				}
 			}
 		}
