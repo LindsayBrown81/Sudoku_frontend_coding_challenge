@@ -199,6 +199,9 @@
 				console.log("indexHistory ", indexHistory);				
 				
 				// if this number or value is already in this row
+				console.log("solution[index] ", solution[index]);
+				console.log("problem[index] ", problem[index]);
+				// if this number or value is already in this row
 				if(valHistory.indexOf(solution[index]) !== -1 && (problem[index])){ // ~ proly no... && (problem[index])
 					// if invalidIndexes array contains current index and this is a user-inputted dup number
 					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ // ~ === ~why need problem[index]? to ensure entry is user input?
@@ -207,9 +210,9 @@
 					console.log("valHistory ", valHistory);
 					// ~ renamed valIndex to origIndex
 					var origIndex = valHistory.indexOf( // store orig index of dup value for this row
-							solution[index] // value <- ~VERIFY is val, not index
+						solution[index] // value <- ~VERIFY is val, not index
 						);
-					console.log("origIndex ", origIndex);
+						console.log("origIndex ", origIndex);
 					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] == null){
 						invalidIndexes.push(indexHistory[origIndex]);
 					}
@@ -235,7 +238,7 @@
 				indexHistory.push(index);				
 				
 				// if this number or value is already in this column
-				if(valHistory.indexOf(solution[index]) !== -1){ // ~ proly no...&& (problem[index])
+				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no...&& (problem[index])
 				                                                				    
 					if(invalidIndexes.indexOf(index) === -1 && problem[index] == null){ 
 						invalidIndexes.push(index);
