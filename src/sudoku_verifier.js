@@ -23,19 +23,22 @@ export function sudokuVerifier({ problem, solution }) {
 				//console.log("solution[index] ", solution[index]);
 				//console.log("problem[index] ", problem[index]);
 				// if this number or value is already in this row and its not null
+				//console.log("value: ", solution[index], "index: ", index);
 				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!==null){ // ~ proly no... && (problem[index])
-					
+					//console.log("entering");
 					// if invalidIndexes array contains current index and this is a user-inputted dup number
-					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ // ~ === ~why need problem[index]? to ensure entry is user input?
+					if(invalidIndexes.indexOf(index) === -1 && problem[index] === null){ // ~ === ~why need problem[index]? to ensure entry is user input?
 						invalidIndexes.push(index);
+						//console.log("pushing index: ", index);
 					}
 					// ~ renamed valIndex to origIndex
 					var origIndex = valHistory.indexOf( // store orig index of dup value for this row
 						solution[index] // value <- ~VERIFY is val, not index
 					);
-					console.log("origIndex ", origIndex);
+					//console.log("origIndex ", origIndex);
 					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
 						invalidIndexes.push(indexHistory[origIndex]);
+						//console.log("pushing first indecator index: ", indexHistory[origIndex]);
 					}
 					// identify the index of only one dup value per iteration. 
 					valHistory[origIndex] = '-';
@@ -62,7 +65,7 @@ export function sudokuVerifier({ problem, solution }) {
 				// if this number or value is already in this column and its not null
 				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!==null){ 
 				
-					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
+					if(invalidIndexes.indexOf(index) === -1 && problem[index] === null){ 
 						invalidIndexes.push(index);
 					}
 					
@@ -87,19 +90,20 @@ export function sudokuVerifier({ problem, solution }) {
 		for(var square = 0; square < 9; square++){
 			var indexHistory = [];
 			var valHistory = [];
-			var baseRow = 0;
-			for(var row = 0; baseRow < 3; row++){
-				baseRow += 1;
-				var baseColumn = 0;
-				for(var column = 0; baseColumn < 3; column++){
-					baseColumn +=1;
-					var index =  column + (row * 9) + (square * 3);
+			//var baseRow = 0;
+			for(var row = 0; row < 3; row++){
+				//baseRow += 1;
+				//var baseColumn = 0;
+				for(var column = 0; column < 3; column++){
+					//baseColumn +=1;
+					var index =  (column + (row * 9) + ((square % 3) * 3)) + (Math.floor(square / 3) * 27);
+
 					indexHistory.push(index);				
 					
 					// if this number or value is already in this square
 					if(valHistory.indexOf(solution[index]) !== -1 && solution[index] !== null){
 					    
-						if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
+						if(invalidIndexes.indexOf(index) === -1 && problem[index] === null){ 
 							invalidIndexes.push(index);
 						}
 						
@@ -122,8 +126,8 @@ export function sudokuVerifier({ problem, solution }) {
 	
 
 	// invoke checker functions with input
-	rowChecker(problem, solution); 
-	columnChecker(problem, solution);
+	//rowChecker(problem, solution); 
+	//columnChecker(problem, solution);
 	squareChecker(problem, solution);
     
 	// define game status
