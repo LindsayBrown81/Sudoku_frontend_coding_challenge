@@ -3,11 +3,11 @@ export function sudokuVerifier({ problem, solution }) {
 
 	// store functions' output; i.e., game's status and index positions of invalid entries
 	var status = '';
-	var invalidIndexes;
+	var invalidIndexes = [];
 
 	function rowChecker(problem, solution){
-		console.log("problem ", problem);
-		console.log("solution ", solution);
+		//console.log("problem ", problem);
+		//console.log("solution ", solution);
 		// for loop that checks for dups
 		for(var row = 0; row < 9; row++){
 			// scope of histories is per row
@@ -17,14 +17,14 @@ export function sudokuVerifier({ problem, solution }) {
 			for(var column = 0; column < 9; column++){
 				var index = column + (row * 9); 
 				indexHistory.push(index);
-				console.log("indexHistory ", indexHistory);				
+				//console.log("indexHistory ", indexHistory);				
 				
 				// if this number or value is already in this row
-				console.log("solution[index] ", solution[index]);
-				console.log("problem[index] ", problem[index]);
+				//console.log("solution[index] ", solution[index]);
+				//console.log("problem[index] ", problem[index]);
 				// if this number or value is already in this row and its not null
-				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no... && (problem[index])
-					invalidIndexes = [];
+				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!==null){ // ~ proly no... && (problem[index])
+					
 					// if invalidIndexes array contains current index and this is a user-inputted dup number
 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ // ~ === ~why need problem[index]? to ensure entry is user input?
 						invalidIndexes.push(index);
@@ -42,8 +42,8 @@ export function sudokuVerifier({ problem, solution }) {
 
 				}
 				valHistory.push(solution[index]);
-				console.log("valHistory ", valHistory);
-				console.log("invalidIndexes ", invalidIndexes); //0 good
+				//console.log("valHistory ", valHistory);
+				//console.log("invalidIndexes ", invalidIndexes); //0 good
 			}
 		}
 		
@@ -60,9 +60,8 @@ export function sudokuVerifier({ problem, solution }) {
 				indexHistory.push(index);				
 				
 				// if this number or value is already in this column and its not null
-				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no...&& (problem[index])
-				    
-				    invalidIndexes = [];                                            				    
+				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!==null){ 
+				
 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
 						invalidIndexes.push(index);
 					}
@@ -77,8 +76,8 @@ export function sudokuVerifier({ problem, solution }) {
 
 				}
 				valHistory.push(solution[index]);
-				console.log("valHistory ", valHistory);
-				console.log("invalidIndexes ", invalidIndexes);
+				//console.log("valHistory ", valHistory);
+				//console.log("invalidIndexes ", invalidIndexes);
 			}
 		}
 	}
@@ -88,18 +87,18 @@ export function sudokuVerifier({ problem, solution }) {
 		for(var square = 0; square < 9; square++){
 			var indexHistory = [];
 			var valHistory = [];
-			
-			for(var row = 0; row < 3; row++){
-				
-				for(var column = 0; column < 3; column++){
-
-					var index =  column + (row * 9) + (square % 3);
+			var baseRow = 0;
+			for(var row = 0; baseRow < 3; row++){
+				baseRow += 1;
+				var baseColumn = 0;
+				for(var column = 0; baseColumn < 3; column++){
+					baseColumn +=1;
+					var index =  column + (row * 9) + (square * 3);
 					indexHistory.push(index);				
 					
 					// if this number or value is already in this square
-					if(valHistory.indexOf(solution[index]) !== -1){
+					if(valHistory.indexOf(solution[index]) !== -1 && solution[index] !== null){
 					    
-					    invalidIndexes = [];
 						if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
 							invalidIndexes.push(index);
 						}
@@ -114,8 +113,8 @@ export function sudokuVerifier({ problem, solution }) {
 
 					}
 					valHistory.push(solution[index]);
-					console.log("valHistory ", valHistory);
-					console.log("invalidIndexes ", invalidIndexes);
+					//console.log("valHistory ", valHistory);
+					//console.log("invalidIndexes ", invalidIndexes);
 				}
 			}
 		}
@@ -130,16 +129,16 @@ export function sudokuVerifier({ problem, solution }) {
 	// define game status
 	// invalid status. if invalidIndexes is an array and is not an empty array //removed Array.isArray(invalidIndexes) && 
  	if (Array.isArray(invalidIndexes) && invalidIndexes.length > 0) {
- 		console.log("invalidIndexes.length", invalidIndexes.length);
+ 		//console.log("invalidIndexes.length", invalidIndexes.length);
 		status = "invalid";
-		console.log("invalidIndexes: ", invalidIndexes);
+		//console.log("invalidIndexes: ", invalidIndexes);
 		invalidIndexes.sort(); // ~ to match Jasmine tests
 	}
 	
 	// incomplete status. if any of the functions above return a null value, then the status should be incomplete.
 	function hasEmptyValue(solution){ 
 		for (const value of solution){
-			if (value === null && problem.indexOf(value) !== -1){
+			if (value === null){
 				return true;
 		 	}
 		}
