@@ -1,188 +1,9 @@
-// export function sudokuVerifier({ problem, solution }) {
-
-(function wrap(){
-  //When called with the second sudoku problem and a valid solution it should have a valid status and an empty invalidIndexes array
-  function sudokuVerifier(json){
-  // TODO implement this function
-  var problem = "";
-  var solution = "";
-	var json={
-	"problem": [
-	1,
-	null,
-	null,
-	4,
-	8,
-	9,
-	null,
-	null,
-	6,
-	7,
-	3,
-	null,
-	null,
-	null,
-	null,
-	null,
-	4,
-	null,
-	null,
-	null,
-	null,
-	null,
-	null,
-	1,
-	2,
-	9,
-	5,
-	null,
-	null,
-	7,
-	1,
-	2,
-	null,
-	6,
-	null,
-	null,
-	5,
-	null,
-	null,
-	7,
-	null,
-	3,
-	null,
-	null,
-	8,
-	null,
-	null,
-	6,
-	null,
-	9,
-	5,
-	7,
-	null,
-	null,
-	9,
-	1,
-	4,
-	6,
-	null,
-	null,
-	null,
-	null,
-	null,
-	null,
-	2,
-	null,
-	null,
-	null,
-	null,
-	null,
-	3,
-	7,
-	8,
-	null,
-	null,
-	5,
-	1,
-	2,
-	null,
-	null,
-	4
-	],
-	"solution": [
-	1,
-	null,
-	null,
-	4,
-	8,
-	9,
-	3,
-	null,
-	6,
-	7,
-	3,
-	9,
-	null,
-	null,
-	6,
-	null,
-	4,
-	1,
-	4,
-	6,
-	8,
-	null,
-	null,
-	1,
-	2,
-	9,
-	5,
-	null,
-	null,
-	7,
-	1,
-	2,
-	null,
-	6,
-	null,
-	9,
-	5,
-	null,
-	1,
-	7,
-	null,
-	3,
-	null,
-	null,
-	8,
-	null,
-	null,
-	6,
-	null,
-	9,
-	5,
-	7,
-	null,
-	3,
-	9,
-	1,
-	4,
-	6,
-	null,
-	null,
-	null,
-	null,
-	null,
-	null,
-	2,
-	null,
-	null,
-	null,
-	8,
-	null,
-	3,
-	7,
-	8,
-	7,
-	null,
-	5,
-	1,
-	2,
-	null,
-	null,
-	4
-	]}
-	console.log("json ", json);
-	
-	problem = json.problem;
-	solution = json.solution;
-	// console.log("L json.problem: ", problem);
-	// console.log("L json.solution ", solution);
+export function sudokuVerifier({ problem, solution }) {
+    // TODO implement this function
 
 	// store functions' output; i.e., game's status and index positions of invalid entries
 	var status = '';
-	var invalidIndexes = [];
+	var invalidIndexes;
 
 	function rowChecker(problem, solution){
 		console.log("problem ", problem);
@@ -203,6 +24,7 @@
 				console.log("problem[index] ", problem[index]);
 				// if this number or value is already in this row and its not null
 				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no... && (problem[index])
+					invalidIndexes = [];
 					// if invalidIndexes array contains current index and this is a user-inputted dup number
 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ // ~ === ~why need problem[index]? to ensure entry is user input?
 						invalidIndexes.push(index);
@@ -239,7 +61,8 @@
 				
 				// if this number or value is already in this column and its not null
 				if(valHistory.indexOf(solution[index]) !== -1 && solution[index]!=null){ // ~ proly no...&& (problem[index])
-				                                                				    
+				    
+				    invalidIndexes = [];                                            				    
 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
 						invalidIndexes.push(index);
 					}
@@ -260,47 +83,49 @@
 		}
 	}
 
-	// function squareChecker(problem, solution) {
-	// 	// for loop that checks for dups
-	// 	for(var square = 0; square < 9; square++){
-	// 		var indexHistory = [];
-	// 		var valHistory = [];
+	function squareChecker(problem, solution) {
+		// for loop that checks for dups
+		for(var square = 0; square < 9; square++){
+			var indexHistory = [];
+			var valHistory = [];
 			
-	// 		for(var row = 0; row < 3; row++){
+			for(var row = 0; row < 3; row++){
 				
-	// 			for(var column = 0; column < 3; column++){
+				for(var column = 0; column < 3; column++){
 
-	// 				var index =  column + (row * 9) + (square % 3);
-	// 				indexHistory.push(index);				
+					var index =  column + (row * 9) + (square % 3);
+					indexHistory.push(index);				
 					
-	// 				// if this number or value is already in this square
-	// 				if(valHistory.indexOf(solution[index]) !== -1){
+					// if this number or value is already in this square
+					if(valHistory.indexOf(solution[index]) !== -1){
 					    
-	// 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
-	// 						invalidIndexes.push(index);
-	// 					}
+					    invalidIndexes = [];
+						if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
+							invalidIndexes.push(index);
+						}
 						
-	// 					var origIndex = valHistory.indexOf(
-	// 						solution[index]
-	// 					);
-	// 					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
-	// 						invalidIndexes.push(indexHistory[origIndex]);
-	// 					}
-	// 					valHistory[origIndex] = '-';
+						var origIndex = valHistory.indexOf(
+							solution[index]
+						);
+						if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
+							invalidIndexes.push(indexHistory[origIndex]);
+						}
+						valHistory[origIndex] = '-';
 
-	// 				}
-	// 				valHistory.push(solution[index]);
-	// 				console.log("valHistory ", valHistory);
-	// 				console.log("invalidIndexes ", invalidIndexes);
-	// 			}
-	// 		}
-	// 	}
-	// }
+					}
+					valHistory.push(solution[index]);
+					console.log("valHistory ", valHistory);
+					console.log("invalidIndexes ", invalidIndexes);
+				}
+			}
+		}
+	}
+	
 
 	// invoke checker functions with input
 	rowChecker(problem, solution); 
 	columnChecker(problem, solution);
-	// squareChecker(problem, solution);
+	squareChecker(problem, solution);
     
 	// define game status
 	// invalid status. if invalidIndexes is an array and is not an empty array //removed Array.isArray(invalidIndexes) && 
@@ -309,7 +134,6 @@
 		status = "invalid";
 		console.log("invalidIndexes: ", invalidIndexes);
 		invalidIndexes.sort(); // ~ to match Jasmine tests
-		// return invalidIndexes;
 	}
 	
 	// incomplete status. if any of the functions above return a null value, then the status should be incomplete.
@@ -323,14 +147,14 @@
 
 	if (hasEmptyValue(solution) && status !== "invalid"){
 		status = "incomplete";
-		invalidIndexes = 0;//or undefined;
+		// invalidIndexes = 0;//or undefined;
 		
 	}
 
 	   	
    	if ((!hasEmptyValue(solution)) && status !== "invalid"){
 		status = "valid";
-		invalidIndexes = 0;//or undefined;
+		// invalidIndexes = 0;//or undefined;
    	}                    
    	console.log("status ", status);
    	console.log("invalidIndexes after sort ", invalidIndexes);
@@ -338,7 +162,7 @@
   		status: status, //invalidIndexes, // valid, invalid, incomplete. invalid takes precedence over incomplete. so if its both, just say its invalid. 
 	    invalidIndexes: invalidIndexes, // which indexes are invalid ~ Delete comma? Proly not
   	}
-  }
-  sudokuVerifier();
-})(); // closes function wrap  ~ semicolons?
+}
+  
+
 
