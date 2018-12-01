@@ -260,51 +260,50 @@
 		}
 	}
 
-	function squareChecker(problem, solution) {
-		// for loop that checks for dups
-		for(var square = 0; square < 9; square++){
-			var indexHistory = [];
-			var valHistory = [];
+	// function squareChecker(problem, solution) {
+	// 	// for loop that checks for dups
+	// 	for(var square = 0; square < 9; square++){
+	// 		var indexHistory = [];
+	// 		var valHistory = [];
 			
-			for(var row = 0; row < 3; row++){
+	// 		for(var row = 0; row < 3; row++){
 				
-				for(var column = 0; column < 3; column++){
+	// 			for(var column = 0; column < 3; column++){
 
-					var index =  column + (row * 9) + (square % 3);
-					indexHistory.push(index);				
+	// 				var index =  column + (row * 9) + (square % 3);
+	// 				indexHistory.push(index);				
 					
-					// if this number or value is already in this square
-					if(valHistory.indexOf(solution[index]) !== -1){
+	// 				// if this number or value is already in this square
+	// 				if(valHistory.indexOf(solution[index]) !== -1){
 					    
-						if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
-							invalidIndexes.push(index);
-						}
+	// 					if(invalidIndexes.indexOf(index) !== -1 && problem[index] === null){ 
+	// 						invalidIndexes.push(index);
+	// 					}
 						
-						var origIndex = valHistory.indexOf(
-							solution[index]
-						);
-						if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
-							invalidIndexes.push(indexHistory[origIndex]);
-						}
-						valHistory[origIndex] = '-';
+	// 					var origIndex = valHistory.indexOf(
+	// 						solution[index]
+	// 					);
+	// 					if(invalidIndexes.indexOf(indexHistory[origIndex]) === -1 && problem[indexHistory[origIndex]] === null){
+	// 						invalidIndexes.push(indexHistory[origIndex]);
+	// 					}
+	// 					valHistory[origIndex] = '-';
 
-					}
-					valHistory.push(solution[index]);
-					console.log("valHistory ", valHistory);
-					console.log("invalidIndexes ", invalidIndexes);
-				}
-			}
-		}
-	}
+	// 				}
+	// 				valHistory.push(solution[index]);
+	// 				console.log("valHistory ", valHistory);
+	// 				console.log("invalidIndexes ", invalidIndexes);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// invoke checker functions with input
-	rowChecker(problem, solution); //~ why are these args not colored? 
+	rowChecker(problem, solution); 
 	columnChecker(problem, solution);
-	squareChecker(problem, solution);
+	// squareChecker(problem, solution);
     
-	
 	// define game status
-	// if invalidIndexes is an array and is not an empty array //removed Array.isArray(invalidIndexes) && 
+	// invalid status. if invalidIndexes is an array and is not an empty array //removed Array.isArray(invalidIndexes) && 
  	if (Array.isArray(invalidIndexes) && invalidIndexes.length > 0) {
  		console.log("invalidIndexes.length", invalidIndexes.length);
 		status = "invalid";
@@ -313,30 +312,32 @@
 		// return invalidIndexes;
 	}
 	
-	// // if any of the functions above return a null value, then the status should be incomplete.
-	// function hasEmptyValue(solution){ 
-	// 	for (const value of solution){
-	// 		if (value == null){
-	// 			return true;
-	// 	 	}
-	// 	}
-	// }
+	// incomplete status. if any of the functions above return a null value, then the status should be incomplete.
+	function hasEmptyValue(solution){ 
+		for (const value of solution){
+			if (value === null && invalidIndexes.indexOf(value) !== -1){
+				return true;
+		 	}
+		}
+	}
 
-	// if (hasEmptyValue(solution) && status !== "invalid"){
-	// 	status = "incomplete";
-	// 	invalidIndexes = 0;//or undefined;
-	// }
+	if (hasEmptyValue(solution)){// && status !== "invalid"){
+		status = "incomplete";
+		invalidIndexes = 0;//or undefined;
+		// return invalidIndexes;
+	}
 
 	   	
- //   	if ((!hasEmptyValue(solution)) && status !== "invalid"){
-	// 	status = "valid";
-	// 	invalidIndexes = 0;//or undefined;
- //   	}                    
-
- //  	return {
- //  		status: status, //invalidIndexes, // valid, invalid, incomplete. invalid takes precedence over incomplete. so if its both, just say its invalid. 
-	//     invalidIndexes: invalidIndexes, // which indexes are invalid ~ Delete comma? Proly not
- //  	}
+   	if ((!hasEmptyValue(solution)) && status !== "invalid"){
+		status = "valid";
+		invalidIndexes = 0;//or undefined;
+   	}                    
+   	console.log("status ", status);
+   	console.log("invalidIndexes after sort ", invalidIndexes);
+  	return {
+  		status: status, //invalidIndexes, // valid, invalid, incomplete. invalid takes precedence over incomplete. so if its both, just say its invalid. 
+	    invalidIndexes: invalidIndexes, // which indexes are invalid ~ Delete comma? Proly not
+  	}
   }
   sudokuVerifier();
 })(); // closes function wrap  ~ semicolons?
