@@ -315,16 +315,16 @@
 	// incomplete status. if any of the functions above return a null value, then the status should be incomplete.
 	function hasEmptyValue(solution){ 
 		for (const value of solution){
-			if (value === null && invalidIndexes.indexOf(value) !== -1){
+			if (value === null && problem.indexOf(value) !== -1){
 				return true;
 		 	}
 		}
 	}
 
-	if (hasEmptyValue(solution)){// && status !== "invalid"){
+	if (hasEmptyValue(solution) && status !== "invalid"){
 		status = "incomplete";
 		invalidIndexes = 0;//or undefined;
-		// return invalidIndexes;
+		
 	}
 
 	   	
