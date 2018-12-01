@@ -126,8 +126,8 @@ export function sudokuVerifier({ problem, solution }) {
 	
 
 	// invoke checker functions with input
-	//rowChecker(problem, solution); 
-	//columnChecker(problem, solution);
+	rowChecker(problem, solution); 
+	columnChecker(problem, solution);
 	squareChecker(problem, solution);
     
 	// define game status
